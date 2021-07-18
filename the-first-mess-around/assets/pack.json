@@ -1,0 +1,161 @@
+{
+  "preload": {
+    "files": [
+      {
+        "type": "json",
+        "key": "animationJSON",
+        "url": "./assets/animations/animations.json"
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-idle-right",
+        "url": "./assets/sprites/droid-assassin/idle-right.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-idle-left",
+        "url": "./assets/sprites/droid-assassin/idle-left.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-run-right",
+        "url": "./assets/sprites/droid-assassin/run-right.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-run-left",
+        "url": "./assets/sprites/droid-assassin/run-left.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-dash-attack-from-idle-right",
+        "url": "./assets/sprites/droid-assassin/dash-attack-from-idle-right.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-dash-attack-from-idle-left",
+        "url": "./assets/sprites/droid-assassin/dash-attack-from-idle-left.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-dash-attack-from-run-right",
+        "url": "./assets/sprites/droid-assassin/dash-attack-from-run-right-EDITED.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-dash-attack-from-run-left",
+        "url": "./assets/sprites/droid-assassin/dash-attack-from-run-left-EDITED.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-attack-right",
+        "url": "./assets/sprites/droid-assassin/attack-right.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-attack-left",
+        "url": "./assets/sprites/droid-assassin/attack-left.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "image",
+        "key": "background-forest-0",
+        "url": "./assets/backgrounds/forest/Layer_0000_9.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-1",
+        "url": "./assets/backgrounds/forest/Layer_0001_8.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-2",
+        "url": "./assets/backgrounds/forest/Layer_0002_7.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-3",
+        "url": "./assets/backgrounds/forest/Layer_0003_6.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-4",
+        "url": "./assets/backgrounds/forest/Layer_0004_Lights.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-5",
+        "url": "./assets/backgrounds/forest/Layer_0005_5.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-6",
+        "url": "./assets/backgrounds/forest/Layer_0006_4.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-7",
+        "url": "./assets/backgrounds/forest/Layer_0007_Lights.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-8",
+        "url": "./assets/backgrounds/forest/Layer_0008_3.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-9",
+        "url": "./assets/backgrounds/forest/Layer_0009_2.png"
+      },
+      {
+        "type": "image",
+        "key": "background-forest-10",
+        "url": "./assets/backgrounds/forest/Layer_0010_1.png"
+      },
+      {
+        "type": "image",
+        "key": "transparent",
+        "url": "./assets/sprites/utils/transparent.png"
+      }
+    ]
+  }
+}

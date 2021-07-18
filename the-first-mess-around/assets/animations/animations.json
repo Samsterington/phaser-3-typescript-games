@@ -1,0 +1,114 @@
+{
+  "anims": [
+    {
+      "key": "droid-assassin-idle-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-idle-right",
+        "start": 0,
+        "end": 9
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-idle-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-idle-left",
+        "start": 0,
+        "end": 9
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-run-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-run-right",
+        "start": 0,
+        "end": 7
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-run-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-run-left",
+        "start": 0,
+        "end": 7
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-dash-attack-from-run-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-dash-attack-from-run-right",
+        "start": 8,
+        "end": 11
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-dash-attack-from-run-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-dash-attack-from-run-left",
+        "start": 8,
+        "end": 11
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-dash-attack-from-idle-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-dash-attack-from-idle-right",
+        "start": 4,
+        "end": 13
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-dash-attack-from-idle-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-dash-attack-from-idle-left",
+        "start": 4,
+        "end": 13
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-attack-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-attack-right",
+        "start": 4,
+        "end": 18
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-attack-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-attack-left",
+        "start": 4,
+        "end": 18
+      },
+      "repeat": 0,
+      "frameRate": 10
+    }
+  ]
+}
