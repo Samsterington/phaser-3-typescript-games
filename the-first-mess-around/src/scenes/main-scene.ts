@@ -27,7 +27,7 @@ export class MainScene extends Phaser.Scene {
       x: this.sys.game.canvas.width / 2,
       y: 337,
       texture: "droid-assassin-idle",
-      startWithCutScene: false,
+      startWithCutScene: true,
     });
 
     this.createForeground();
@@ -66,7 +66,7 @@ export class MainScene extends Phaser.Scene {
       this.scale.height,
       "transparent"
     );
-    floor.setSize(10000, 95);
+    floor.setSize(100000, 95);
   }
 
   createRepeatingBackground(
