@@ -97,6 +97,24 @@
         }
       },
       {
+        "type": "spritesheet",
+        "key": "mage-samurai-idle-right",
+        "url": "./assets/sprites/mage-samurai/idle-right.png",
+        "frameConfig": {
+          "frameWidth": 128,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "mage-samurai-dying-right",
+        "url": "./assets/sprites/mage-samurai/dying-right.png",
+        "frameConfig": {
+          "frameWidth": 128,
+          "frameHeight": 48
+        }
+      },
+      {
         "type": "image",
         "key": "background-forest-0",
         "url": "./assets/backgrounds/forest/Layer_0000_9.png"
@@ -155,6 +173,11 @@
         "type": "image",
         "key": "transparent",
         "url": "./assets/sprites/utils/transparent.png"
+      },
+      {
+        "type": "image",
+        "key": "black",
+        "url": "./assets/sprites/utils/black.png"
       }
     ]
   }

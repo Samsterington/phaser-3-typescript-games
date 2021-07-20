@@ -1,9 +1,10 @@
 import { SpriteConstructorParams } from "../interfaces/sprite.interface";
 import { panCameraDuringDashFromIdle } from "../utils/camera-utils";
 import { MainScene } from "../scenes/main-scene";
+import { ORIGIN, CHARACTER_SCALE } from "../utils/sprite-utils";
 
 // The associated strings match the animation
-enum DroidAssassinState {
+export enum DroidAssassinState {
   IDLE_RIGHT = "droid-assassin-idle-right",
   IDLE_LEFT = "droid-assassin-idle-left",
   RUN_RIGHT = "droid-assassin-run-right",
@@ -25,22 +26,15 @@ enum ActiveInput {
   DOWN = "DOWN",
 }
 
-const ORIGIN = {
-  LEFT: [0.76, 0.5],
-  RIGHT: [0.24, 0.5],
-};
-
 const CONTROLS = {
   RUN_DECELERATION: 1200,
-  RUN_ACCELERATION: 1000,
+  RUN_ACCELERATION: 1200,
   ATTACK_SLIDE_DECELERATION: 300,
   FULL_STOP_VELOCITY: 5, // Velocity at which you are made to stop i.r have 0 velocity
   RUN_SPEED: 210,
 };
 
 const CHARACTER_VERTICAL_OFFSET = 130;
-
-const CHARACTER_SCALE = 2.5;
 
 const DASH_DISTANCE = 66 * CHARACTER_SCALE;
 
@@ -52,7 +46,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   body: Phaser.Physics.Arcade.Body;
 
   private currentScene: MainScene;
-  private currentState: DroidAssassinState;
+  public currentState: DroidAssassinState;
   private keys: Map<ActiveInput, Phaser.Input.Keyboard.Key>;
 
   // Start Transition
@@ -81,7 +75,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   }
 
   initSprite(startWithCutScene: boolean) {
-    this.setOrigin(0.25, 0.5);
+    this.setOrigin(...ORIGIN.RIGHT);
     this.scale = CHARACTER_SCALE;
 
     if (startWithCutScene) {
@@ -325,7 +319,11 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     const numberOfAnimationFrames = this.currentScene.anims.get(
       DroidAssassinState.DASH_ATTACK_FROM_RUN_RIGHT
     ).frames.length;
-    const timeLengthOfAnimation = numberOfAnimationFrames / 10;
+    const frameRateOfAnimation = this.currentScene.anims.get(
+      DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT
+    ).frameRate;
+    const timeLengthOfAnimation =
+      numberOfAnimationFrames * (1 / frameRateOfAnimation);
     const totalDistanceCovered =
       DASH_DISTANCE + CONTROLS.RUN_SPEED * timeLengthOfAnimation;
     panCameraDuringDashFromIdle(
@@ -342,7 +340,11 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     const numberOfAnimationFrames = this.currentScene.anims.get(
       DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT
     ).frames.length;
-    const timeLengthOfAnimation = numberOfAnimationFrames / 10;
+    const frameRateOfAnimation = this.currentScene.anims.get(
+      DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT
+    ).frameRate;
+    const timeLengthOfAnimation =
+      numberOfAnimationFrames * (1 / frameRateOfAnimation);
     const totalDistanceCovered =
       DASH_DISTANCE + CONTROLS.RUN_SPEED * timeLengthOfAnimation;
     panCameraDuringDashFromIdle(

@@ -109,6 +109,39 @@
       },
       "repeat": 0,
       "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-idle-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-idle-right",
+        "start": 0,
+        "end": 3
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-dying-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-dying-right",
+        "start": 0,
+        "end": 8
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-dying-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-dead-right",
+        "start": 8,
+        "end": 8
+      },
+      "repeat": -1,
+      "frameRate": 10
     }
   ]
 }

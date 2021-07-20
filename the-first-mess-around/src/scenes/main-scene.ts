@@ -1,12 +1,13 @@
-import { DroidAssassin } from "../objects/droidAssassin";
-import { BootScene } from "./boot-scene";
+import { DroidAssassin, DroidAssassinState } from "../objects/droidAssassin";
+import { MageSamurai, MageSamuraiState } from "../objects/mageSamurai";
 
 const BACKGROUND_VERTICAL_OFFSET = -376;
 const BOUNDS_MULTIPLIER = 10;
 const MAX_IMAGE_SCROLLFACTOR = 1.3;
 
 export class MainScene extends Phaser.Scene {
-  private droidAssassin: DroidAssassin;
+  public droidAssassin: DroidAssassin;
+  public mageSamurai: MageSamurai;
   private floors: Phaser.Physics.Arcade.StaticGroup;
   private images: Phaser.GameObjects.Image[];
 
@@ -22,22 +23,29 @@ export class MainScene extends Phaser.Scene {
 
     this.createBackground();
 
+    this.mageSamurai = new MageSamurai({
+      scene: this,
+      x: this.sys.game.canvas.width / 3,
+      y: -150,
+      texture: "mage-samurai-idle-right",
+    });
+
     this.droidAssassin = new DroidAssassin({
       scene: this,
       x: this.sys.game.canvas.width / 2,
       y: 337,
       texture: "droid-assassin-idle",
-      startWithCutScene: true,
+      startWithCutScene: false,
     });
 
     this.createForeground();
 
     this.createCollisions();
+    this.createOverlaps();
   }
 
   public changeImageScrollFactor() {
     this.images.forEach((image) => {
-      console.log(image.scrollFactorX);
       image.setScrollFactor(
         Math.round((MAX_IMAGE_SCROLLFACTOR - image.scrollFactorX) * 10) / 10
       );
@@ -53,10 +61,6 @@ export class MainScene extends Phaser.Scene {
       width * BOUNDS_MULTIPLIER * 2,
       height
     );
-  }
-
-  createCollisions() {
-    this.physics.add.collider(this.floors, this.droidAssassin);
   }
 
   createFloor() {
@@ -143,6 +147,39 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(): void {
+    this.mageSamurai.update();
     this.droidAssassin.update();
   }
+
+  createCollisions() {
+    this.physics.add.collider(this.floors, this.mageSamurai);
+    this.physics.add.collider(this.floors, this.droidAssassin);
+  }
+
+  createOverlaps() {
+    this.physics.add.overlap(
+      this.droidAssassin,
+      this.mageSamurai,
+      this.ifDroidAssassinMageSamuraiOverlap
+    );
+  }
+
+  // Overlap Callbacks
+  ifDroidAssassinMageSamuraiOverlap: ArcadePhysicsCallback = (
+    DA: DroidAssassin,
+    MS: MageSamurai
+  ) => {
+    const { currentState: DACurrentState } = DA;
+    const { currentState: MSCurrentState } = MS;
+    switch (DACurrentState) {
+      case DroidAssassinState.ATTACK_LEFT:
+      case DroidAssassinState.ATTACK_RIGHT:
+        if (
+          MSCurrentState !== MageSamuraiState.DEAD_LEFT &&
+          MSCurrentState !== MageSamuraiState.DEAD_RIGHT
+        ) {
+          MS.die();
+        }
+    }
+  };
 }
