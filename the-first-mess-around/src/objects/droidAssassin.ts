@@ -2,6 +2,7 @@ import { SpriteConstructorParams } from "../interfaces/sprite.interface";
 import { panCameraDuringDashFromIdle } from "../utils/camera-utils";
 import { MainScene } from "../scenes/main-scene";
 import { ORIGIN, CHARACTER_SCALE } from "../utils/sprite-utils";
+import { MageSamuraiState } from "./mageSamurai";
 
 // The associated strings match the animation
 export enum DroidAssassinState {
@@ -420,12 +421,14 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   attackLeftReset() {
     if (this.currentState === DroidAssassinState.ATTACK_LEFT) {
       this.idleLeft();
+      this.attackFinishedDeathCheck();
     }
   }
 
   attackRightReset() {
     if (this.currentState === DroidAssassinState.ATTACK_RIGHT) {
       this.idleRight();
+      this.attackFinishedDeathCheck();
     }
   }
 
@@ -479,6 +482,18 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
       this.body.setAccelerationX(acceleration);
     } else {
       this.stopMotion();
+    }
+  }
+
+  attackFinishedDeathCheck() {
+    const mageSamurai = this.currentScene.mageSamurai;
+    if (
+      mageSamurai.currentState === MageSamuraiState.HAS_BEEN_HIT_LEFT ||
+      mageSamurai.currentState === MageSamuraiState.HAS_BEEN_HIT_RIGHT
+    ) {
+      setTimeout(() => {
+        mageSamurai.die();
+      }, 100);
     }
   }
 }

@@ -8,6 +8,7 @@ const MAX_IMAGE_SCROLLFACTOR = 1.3;
 export class MainScene extends Phaser.Scene {
   public droidAssassin: DroidAssassin;
   public mageSamurai: MageSamurai;
+
   private floors: Phaser.Physics.Arcade.StaticGroup;
   private images: Phaser.GameObjects.Image[];
 
@@ -169,18 +170,12 @@ export class MainScene extends Phaser.Scene {
     DA: DroidAssassin,
     MS: MageSamurai
   ) => {
-    console.log("collision");
     const { currentState: DACurrentState } = DA;
-    const { currentState: MSCurrentState } = MS;
+    // const { currentState: MSCurrentState } = MS;
     switch (DACurrentState) {
       case DroidAssassinState.ATTACK_LEFT:
       case DroidAssassinState.ATTACK_RIGHT:
-        if (
-          MSCurrentState !== MageSamuraiState.DEAD_LEFT &&
-          MSCurrentState !== MageSamuraiState.DEAD_RIGHT
-        ) {
-          MS.die();
-        }
+        MS.getHit();
     }
   };
 }

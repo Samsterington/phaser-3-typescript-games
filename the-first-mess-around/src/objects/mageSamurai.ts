@@ -7,6 +7,8 @@ export enum MageSamuraiState {
   DYING_RIGHT = "mage-samurai-dying-right",
   DEAD_RIGHT = "mage-samurai-dead-right",
   DEAD_LEFT = "mage-samurai-dead-left",
+  HAS_BEEN_HIT_RIGHT = "mage-samurai-has-been-hit-right",
+  HAS_BEEN_HIT_LEFT = "mage-samurai-has-been-hit-left",
 }
 
 export class MageSamurai extends Phaser.GameObjects.Sprite {
@@ -37,6 +39,9 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   handleAnimations() {
     switch (this.currentState) {
+      case MageSamuraiState.HAS_BEEN_HIT_RIGHT:
+        this.anims.stop();
+        break;
       case MageSamuraiState.IDLE_RIGHT:
         this.anims.play(this.currentState, true);
         break;
@@ -58,23 +63,43 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     // }
   }
 
+  getHit(paramDirection?: Direction) {
+    if (!this.isDeadAlready()) {
+      const direction = this.getDirection(paramDirection);
+      switch (direction) {
+        case Direction.RIGHT:
+          this.currentState = MageSamuraiState.HAS_BEEN_HIT_RIGHT;
+          break;
+        case Direction.LEFT:
+          this.currentState = MageSamuraiState.HAS_BEEN_HIT_LEFT;
+          break;
+      }
+    }
+  }
+
   dead(paramDirection?: Direction) {
-    const direction = this.getDirection(paramDirection);
-    switch (direction) {
-      case Direction.RIGHT:
-        this.currentState = MageSamuraiState.DEAD_RIGHT;
-      case Direction.LEFT:
-        this.currentState = MageSamuraiState.DEAD_LEFT;
+    if (this.currentState === MageSamuraiState.DYING_RIGHT) {
+      const direction = this.getDirection(paramDirection);
+      switch (direction) {
+        case Direction.RIGHT:
+          this.currentState = MageSamuraiState.DEAD_RIGHT;
+          break;
+        case Direction.LEFT:
+          this.currentState = MageSamuraiState.DEAD_LEFT;
+          break;
+      }
     }
   }
 
   die(paramDirection?: Direction) {
-    const direction = this.getDirection(paramDirection);
-    switch (direction) {
-      case Direction.RIGHT:
-        this.currentState = MageSamuraiState.DYING_RIGHT;
-      case Direction.LEFT:
-        this.currentState = MageSamuraiState.DYING_RIGHT; // TODO - Will need to change to left
+    if (!this.isDeadAlready()) {
+      const direction = this.getDirection(paramDirection);
+      switch (direction) {
+        case Direction.RIGHT:
+          this.currentState = MageSamuraiState.DYING_RIGHT;
+        case Direction.LEFT:
+          this.currentState = MageSamuraiState.DYING_RIGHT; // TODO - Will need to change to left
+      }
     }
   }
 
@@ -88,8 +113,20 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
       case "left":
         return Direction.LEFT;
       case "right":
+        return Direction.RIGHT;
       default:
         return Direction.RIGHT;
     }
   };
+
+  isDeadAlready(): boolean {
+    if (
+      this.currentState === MageSamuraiState.DEAD_RIGHT ||
+      this.currentState === MageSamuraiState.DEAD_LEFT
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
