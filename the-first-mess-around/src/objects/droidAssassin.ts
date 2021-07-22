@@ -77,6 +77,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   initSprite(startWithCutScene: boolean) {
     this.setOrigin(...ORIGIN.RIGHT);
     this.scale = CHARACTER_SCALE;
+    this.setSize(30, 30);
 
     if (startWithCutScene) {
       this.currentState = DroidAssassinState.BAD_ASS_CUT_SCENE_RIGHT;

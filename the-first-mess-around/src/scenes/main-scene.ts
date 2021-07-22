@@ -169,6 +169,7 @@ export class MainScene extends Phaser.Scene {
     DA: DroidAssassin,
     MS: MageSamurai
   ) => {
+    console.log("collision");
     const { currentState: DACurrentState } = DA;
     const { currentState: MSCurrentState } = MS;
     switch (DACurrentState) {
