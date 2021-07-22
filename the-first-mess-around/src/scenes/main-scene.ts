@@ -175,6 +175,8 @@ export class MainScene extends Phaser.Scene {
     switch (DACurrentState) {
       case DroidAssassinState.ATTACK_LEFT:
       case DroidAssassinState.ATTACK_RIGHT:
+      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
+      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
         MS.getHit();
     }
   };

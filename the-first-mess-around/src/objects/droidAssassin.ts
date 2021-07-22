@@ -437,6 +437,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT) {
       this.x -= DASH_DISTANCE;
       this.idleLeft();
+      this.attackFinishedDeathCheck();
     }
   }
 
@@ -445,6 +446,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT) {
       this.x += DASH_DISTANCE;
       this.idleRight();
+      this.attackFinishedDeathCheck();
     }
   }
 
