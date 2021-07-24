@@ -39,6 +39,8 @@ const CONTROLS = {
   RUN_SPEED: 210,
 };
 
+const ATTACK_WIDTH = 100;
+
 const OFFSET: LeftRightXYType = {
   RIGHT: [22, 10],
   LEFT: [98, 10],
@@ -415,6 +417,8 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromIdleLeft() {
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT;
     this.stopMotion();
+    this.body.setSize(ATTACK_WIDTH, SIZE[1], false);
+    this.body.setOffset(SIZE[0], OFFSET.LEFT[1]);
     panCameraDuringDashFromIdle(
       this.x - DASH_DISTANCE,
       this.y - CHARACTER_VERTICAL_OFFSET,
@@ -427,6 +431,8 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromIdleRight() {
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT;
     this.stopMotion();
+    this.body.setSize(ATTACK_WIDTH, SIZE[1], false);
+    this.body.setOffset(...OFFSET.RIGHT);
     panCameraDuringDashFromIdle(
       this.x + DASH_DISTANCE,
       this.y - CHARACTER_VERTICAL_OFFSET,
@@ -455,6 +461,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     // Fudge because the on animationcomplete callback fires multiple times
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT) {
       this.x -= DASH_DISTANCE;
+      this.body.setSize(...SIZE);
       this.idleLeft();
       this.attackFinishedDeathCheck();
     }
@@ -464,6 +471,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     // Fudge because the on animationcomplete callback fires multiple times
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT) {
       this.x += DASH_DISTANCE;
+      this.body.setSize(...SIZE);
       this.idleRight();
       this.attackFinishedDeathCheck();
     }
