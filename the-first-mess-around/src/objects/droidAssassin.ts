@@ -525,6 +525,25 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
       }, 100);
     }
   }
+
+  onAttackingAnimationFrame(): boolean {
+    const frameNumber = parseInt(this.anims.currentFrame.frame.name, 10);
+    switch (this.currentState) {
+      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
+      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
+        if (frameNumber >= 10 && frameNumber <= 13) {
+          return true;
+        }
+        break;
+      case DroidAssassinState.ATTACK_RIGHT:
+      case DroidAssassinState.ATTACK_LEFT:
+        if (frameNumber >= 12 && frameNumber <= 16) {
+          return true;
+        }
+        break;
+    }
+    return false;
+  }
 }
 
 // STATE MACHINE UTILS //
