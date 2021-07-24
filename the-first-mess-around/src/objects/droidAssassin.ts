@@ -526,7 +526,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     }
   }
 
-  onAttackingAnimationFrame(): boolean {
+  isAttackingAnimationFrame(): boolean {
     const frameNumber = parseInt(this.anims.currentFrame.frame.name, 10);
     switch (this.currentState) {
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:

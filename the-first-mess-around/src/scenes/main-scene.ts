@@ -175,13 +175,9 @@ export class MainScene extends Phaser.Scene {
     switch (DACurrentState) {
       case DroidAssassinState.ATTACK_LEFT:
       case DroidAssassinState.ATTACK_RIGHT:
-        if (DA.onAttackingAnimationFrame()) {
-          MS.getHit();
-        }
-        break;
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
-        if (DA.onAttackingAnimationFrame()) {
+        if (DA.isAttackingAnimationFrame()) {
           MS.getHit();
         }
         break;
