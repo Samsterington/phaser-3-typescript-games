@@ -34,7 +34,7 @@ export class MainScene extends Phaser.Scene {
     this.droidAssassin = new DroidAssassin({
       scene: this,
       x: this.sys.game.canvas.width / 2,
-      y: 337,
+      y: 200,
       texture: "droid-assassin-idle",
       startWithCutScene: false,
     });

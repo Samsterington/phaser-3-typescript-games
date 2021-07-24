@@ -3,7 +3,12 @@ export enum Direction {
   LEFT = -1,
 }
 
-export const ORIGIN = {
+export interface LeftRightXYType {
+  LEFT: [number, number];
+  RIGHT: [number, number];
+}
+
+export const ORIGIN: LeftRightXYType = {
   LEFT: [0.76, 0.5],
   RIGHT: [0.24, 0.5],
 };

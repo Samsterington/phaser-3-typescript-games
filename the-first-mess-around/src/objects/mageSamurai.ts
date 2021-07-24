@@ -1,6 +1,11 @@
 import { SpriteConstructorParams } from "../interfaces/sprite.interface";
 import { MainScene } from "../scenes/main-scene";
-import { Direction, CHARACTER_SCALE, ORIGIN } from "../utils/sprite-utils";
+import {
+  Direction,
+  CHARACTER_SCALE,
+  ORIGIN,
+  LeftRightXYType,
+} from "../utils/sprite-utils";
 
 export enum MageSamuraiState {
   IDLE_RIGHT = "mage-samurai-idle-right",
@@ -10,6 +15,13 @@ export enum MageSamuraiState {
   HAS_BEEN_HIT_RIGHT = "mage-samurai-has-been-hit-right",
   HAS_BEEN_HIT_LEFT = "mage-samurai-has-been-hit-left",
 }
+
+const OFFSET: LeftRightXYType = {
+  RIGHT: [22, 10],
+  LEFT: [98, 10],
+};
+
+const SIZE: [number, number] = [25, 22];
 
 export class MageSamurai extends Phaser.GameObjects.Sprite {
   body: Phaser.Physics.Arcade.Body;
@@ -25,11 +37,13 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   }
 
   initSprite() {
+    this.currentScene.physics.world.enable(this);
+    this.body.setSize(...SIZE);
+    this.body.setOffset(...OFFSET.RIGHT);
+
     this.setOrigin(...ORIGIN.RIGHT);
     this.scale = CHARACTER_SCALE;
     this.currentState = MageSamuraiState.IDLE_RIGHT;
-    this.currentScene.physics.world.enable(this);
-    this.body.setSize(250, 18);
   }
 
   update() {
@@ -65,6 +79,7 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   getHit(paramDirection?: Direction) {
     if (!this.isDeadAlready()) {
+      this.tint = 0xff0000;
       const direction = this.getDirection(paramDirection);
       switch (direction) {
         case Direction.RIGHT:
@@ -93,6 +108,7 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   die(paramDirection?: Direction) {
     if (!this.isDeadAlready()) {
+      this.clearTint();
       const direction = this.getDirection(paramDirection);
       switch (direction) {
         case Direction.RIGHT:

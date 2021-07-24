@@ -1,7 +1,11 @@
 import { SpriteConstructorParams } from "../interfaces/sprite.interface";
 import { panCameraDuringDashFromIdle } from "../utils/camera-utils";
 import { MainScene } from "../scenes/main-scene";
-import { ORIGIN, CHARACTER_SCALE } from "../utils/sprite-utils";
+import {
+  ORIGIN,
+  CHARACTER_SCALE,
+  LeftRightXYType,
+} from "../utils/sprite-utils";
 import { MageSamuraiState } from "./mageSamurai";
 
 // The associated strings match the animation
@@ -35,6 +39,12 @@ const CONTROLS = {
   RUN_SPEED: 210,
 };
 
+const OFFSET: LeftRightXYType = {
+  RIGHT: [22, 10],
+  LEFT: [98, 10],
+};
+
+const SIZE: [number, number] = [25, 22];
 const CHARACTER_VERTICAL_OFFSET = 130;
 
 const DASH_DISTANCE = 66 * CHARACTER_SCALE;
@@ -78,7 +88,6 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   initSprite(startWithCutScene: boolean) {
     this.setOrigin(...ORIGIN.RIGHT);
     this.scale = CHARACTER_SCALE;
-    this.setSize(30, 30);
 
     if (startWithCutScene) {
       this.currentState = DroidAssassinState.BAD_ASS_CUT_SCENE_RIGHT;
@@ -96,6 +105,10 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     );
 
     this.currentScene.physics.world.enable(this);
+    this.body.setOffset(...OFFSET.RIGHT);
+    this.body.setSize(...SIZE); // Doesn't seem to fo anything
+    this.body.debugShowBody = true;
+    // this.body.debugBodyColor = 0xff00ff;
 
     this.keys = new Map([
       [ActiveInput.LEFT, this.addKey("LEFT")],
@@ -360,23 +373,27 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   attackLeft() {
     this.applyFrictionFromLeft(CONTROLS.ATTACK_SLIDE_DECELERATION);
     this.setOrigin(...ORIGIN.LEFT);
+    this.body.setOffset(...OFFSET.LEFT);
     this.currentState = DroidAssassinState.ATTACK_LEFT;
   }
 
   attackRight() {
     this.applyFrictionFromRight(CONTROLS.ATTACK_SLIDE_DECELERATION);
     this.setOrigin(...ORIGIN.RIGHT);
+    this.body.setOffset(...OFFSET.RIGHT);
     this.currentState = DroidAssassinState.ATTACK_RIGHT;
   }
 
   runLeft() {
     this.setOrigin(...ORIGIN.LEFT);
+    this.body.setOffset(...OFFSET.LEFT);
     this.currentState = DroidAssassinState.RUN_LEFT;
     this.body.setAccelerationX(-CONTROLS.RUN_ACCELERATION);
   }
 
   runRight() {
     this.setOrigin(...ORIGIN.RIGHT);
+    this.body.setOffset(...OFFSET.RIGHT);
     this.currentState = DroidAssassinState.RUN_RIGHT;
     this.body.setAccelerationX(CONTROLS.RUN_ACCELERATION);
   }
@@ -384,12 +401,14 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   idleLeft() {
     this.applyFrictionFromLeft(CONTROLS.RUN_DECELERATION);
     this.setOrigin(...ORIGIN.LEFT);
+    this.body.setOffset(...OFFSET.LEFT);
     this.currentState = DroidAssassinState.IDLE_LEFT;
   }
 
   idleRight() {
     this.applyFrictionFromRight(CONTROLS.RUN_DECELERATION);
     this.setOrigin(...ORIGIN.RIGHT);
+    this.body.setOffset(...OFFSET.RIGHT);
     this.currentState = DroidAssassinState.IDLE_RIGHT;
   }
 
