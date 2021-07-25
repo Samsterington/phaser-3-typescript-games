@@ -39,7 +39,7 @@ const CONTROLS = {
   RUN_SPEED: 210,
 };
 
-const ATTACK_WIDTH = 100;
+const DASH_ATTACK_WIDTH = 100;
 
 const OFFSET: LeftRightXYType = {
   RIGHT: [22, 10],
@@ -417,7 +417,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromIdleLeft() {
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT;
     this.stopMotion();
-    this.body.setSize(ATTACK_WIDTH, SIZE[1], false);
+    this.body.setSize(DASH_ATTACK_WIDTH, SIZE[1], false);
     this.body.setOffset(SIZE[0], OFFSET.LEFT[1]);
     panCameraDuringDashFromIdle(
       this.x - DASH_DISTANCE,
@@ -431,7 +431,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromIdleRight() {
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT;
     this.stopMotion();
-    this.body.setSize(ATTACK_WIDTH, SIZE[1], false);
+    this.body.setSize(DASH_ATTACK_WIDTH, SIZE[1], false);
     this.body.setOffset(...OFFSET.RIGHT);
     panCameraDuringDashFromIdle(
       this.x + DASH_DISTANCE,

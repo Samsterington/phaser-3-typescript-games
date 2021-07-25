@@ -155,6 +155,28 @@
       "frameRate": 10
     },
     {
+      "key": "mage-samurai-jump-attack-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-jump-attack-right",
+        "start": 0,
+        "end": 14
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-jump-attack-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-jump-attack-left",
+        "start": 0,
+        "end": 14
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
       "key": "mage-samurai-dying-right",
       "frames": {
         "typeOfGeneration": "generateFrameNumbers",

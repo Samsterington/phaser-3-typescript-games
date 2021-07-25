@@ -12,6 +12,8 @@ export enum MageSamuraiState {
   IDLE_LEFT = "mage-samurai-idle-left",
   WALK_RIGHT = "mage-samurai-walk-right",
   WALK_LEFT = "mage-samurai-walk-left",
+  JUMP_ATTACK_RIGHT = "mage-samurai-jump-attack-right",
+  JUMP_ATTACK_LEFT = "mage-samurai-jump-attack-left",
   DYING_RIGHT = "mage-samurai-dying-right",
   DYING_LEFT = "mage-samurai-dying-left",
   DEAD_RIGHT = "mage-samurai-dead-right",
@@ -30,10 +32,12 @@ const ORIGIN: LeftRightXYType = {
 };
 
 const CONTROLS = {
-  SEEING_DISTANCE: 300,
-  ATTACK_DISTANCE: 100,
-  WALK_SPEED: 50,
+  SEEING_DISTANCE: 350,
+  ATTACK_DISTANCE: 180,
+  WALK_SPEED: 29,
   WALK_ACCELERATION: 200,
+  JUMP_ATTACK_WIDTH: 90,
+  JUMP_ATTACK_TIMEOUT: 5000,
 };
 
 const OFFSET: LeftRightXYType = {
@@ -48,6 +52,10 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   private currentScene: MainScene;
   public currentState: MageSamuraiState;
+
+  private isAttackReady = {
+    jumpAttack: true,
+  };
 
   constructor({ scene, x, y, texture, frame }: SpriteConstructorParams) {
     super(scene, x, y, texture, frame);
@@ -92,6 +100,12 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
           this.dead();
         });
         break;
+      case MageSamuraiState.JUMP_ATTACK_LEFT:
+      case MageSamuraiState.JUMP_ATTACK_RIGHT:
+        this.anims.play(this.currentState, true).on("animationcomplete", () => {
+          this.jumpAttackReset();
+        });
+        break;
     }
   }
 
@@ -112,15 +126,12 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     switch (this.currentState) {
       case MageSamuraiState.IDLE_LEFT:
       case MageSamuraiState.IDLE_RIGHT:
-        // if (Math.abs(DISTANCE_TO_DA) < CONTROLS.ATTACK_DISTANCE) {
-        //   if (DISTANCE_TO_DA < 0) {
-        //     this.attack();
-        //   }
-        //   if (DISTANCE_TO_DA > 0) {
-        //     this.attack();
-        //   }
-        // } else
         if (
+          Math.abs(DISTANCE_TO_DA) < CONTROLS.ATTACK_DISTANCE &&
+          this.isAttackReady.jumpAttack
+        ) {
+          this.jumpAttack();
+        } else if (
           Math.abs(DISTANCE_TO_DA) < CONTROLS.SEEING_DISTANCE &&
           Math.abs(DISTANCE_TO_DA) > CONTROLS.ATTACK_DISTANCE
         ) {
@@ -142,6 +153,44 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
         } else {
           this.walk();
         }
+        break;
+    }
+  }
+
+  jumpAttack(paramDirection?: Direction) {
+    const direction = this.getDirection(paramDirection);
+    this.stopMotion(); // Might need to be replaced with friction down the line if wanting more realism
+    this.correctOriginAndOffset(direction);
+    this.body.setSize(CONTROLS.JUMP_ATTACK_WIDTH, SIZE[1], false);
+    this.isAttackReady.jumpAttack = false;
+
+    switch (direction) {
+      case Direction.RIGHT:
+        this.currentState = MageSamuraiState.JUMP_ATTACK_RIGHT;
+        this.body.setOffset(...OFFSET.RIGHT);
+        break;
+      case Direction.LEFT:
+        this.currentState = MageSamuraiState.JUMP_ATTACK_LEFT;
+        this.body.setOffset(SIZE[0] / 2, OFFSET.LEFT[1]); // SEEMS FUDGY?
+        break;
+    }
+  }
+
+  jumpAttackReset(paramDirection?: Direction) {
+    const direction = this.getDirection(paramDirection);
+    this.correctOriginAndOffset(direction);
+    this.body.setSize(...SIZE);
+    setTimeout(() => {
+      this.isAttackReady.jumpAttack = true;
+    }, CONTROLS.JUMP_ATTACK_TIMEOUT);
+    switch (direction) {
+      case Direction.RIGHT:
+        this.currentState = MageSamuraiState.IDLE_RIGHT;
+        this.body.setOffset(...OFFSET.RIGHT);
+        break;
+      case Direction.LEFT:
+        this.currentState = MageSamuraiState.IDLE_LEFT;
+        this.body.setOffset(...OFFSET.LEFT);
         break;
     }
   }

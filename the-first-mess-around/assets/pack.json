@@ -151,6 +151,24 @@
         }
       },
       {
+        "type": "spritesheet",
+        "key": "mage-samurai-jump-attack-right",
+        "url": "./assets/sprites/mage-samurai/jump-attack-right.png",
+        "frameConfig": {
+          "frameWidth": 128,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "mage-samurai-jump-attack-left",
+        "url": "./assets/sprites/mage-samurai/jump-attack-left.png",
+        "frameConfig": {
+          "frameWidth": 128,
+          "frameHeight": 48
+        }
+      },
+      {
         "type": "image",
         "key": "background-forest-0",
         "url": "./assets/backgrounds/forest/Layer_0000_9.png"
