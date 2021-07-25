@@ -177,7 +177,7 @@ export class MainScene extends Phaser.Scene {
       case DroidAssassinState.ATTACK_RIGHT:
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
-        if (DA.isAttackingAnimationFrame()) {
+        if (DA.isAttackingAnimationFrame() && !MS.isInvulnerable) {
           MS.getHit();
         }
         break;

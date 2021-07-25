@@ -57,6 +57,8 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     jumpAttack: true,
   };
 
+  public isInvulnerable = false;
+
   constructor({ scene, x, y, texture, frame }: SpriteConstructorParams) {
     super(scene, x, y, texture, frame);
     this.currentScene = scene as MainScene;
@@ -163,6 +165,7 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     this.correctOriginAndOffset(direction);
     this.body.setSize(CONTROLS.JUMP_ATTACK_WIDTH, SIZE[1], false);
     this.isAttackReady.jumpAttack = false;
+    this.isInvulnerable = true;
 
     switch (direction) {
       case Direction.RIGHT:
@@ -180,9 +183,11 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     const direction = this.getDirection(paramDirection);
     this.correctOriginAndOffset(direction);
     this.body.setSize(...SIZE);
+    this.isInvulnerable = false;
     setTimeout(() => {
       this.isAttackReady.jumpAttack = true;
     }, CONTROLS.JUMP_ATTACK_TIMEOUT);
+
     switch (direction) {
       case Direction.RIGHT:
         this.currentState = MageSamuraiState.IDLE_RIGHT;
