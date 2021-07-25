@@ -122,6 +122,39 @@
       "frameRate": 10
     },
     {
+      "key": "mage-samurai-idle-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-idle-left",
+        "start": 0,
+        "end": 3
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-walk-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-walk-right",
+        "start": 0,
+        "end": 4
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-walk-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-walk-left",
+        "start": 0,
+        "end": 4
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
       "key": "mage-samurai-dying-right",
       "frames": {
         "typeOfGeneration": "generateFrameNumbers",
@@ -137,6 +170,28 @@
       "frames": {
         "typeOfGeneration": "generateFrameNumbers",
         "key": "mage-samurai-dead-right",
+        "start": 8,
+        "end": 8
+      },
+      "repeat": -1,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-dying-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-dying-left",
+        "start": 0,
+        "end": 8
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "mage-samurai-dying-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "mage-samurai-dead-left",
         "start": 8,
         "end": 8
       },

@@ -26,15 +26,15 @@ export class MainScene extends Phaser.Scene {
 
     this.mageSamurai = new MageSamurai({
       scene: this,
-      x: this.sys.game.canvas.width / 3,
-      y: -150,
+      x: 850,
+      y: 333,
       texture: "mage-samurai-idle-right",
     });
 
     this.droidAssassin = new DroidAssassin({
       scene: this,
       x: this.sys.game.canvas.width / 2,
-      y: 200,
+      y: 333,
       texture: "droid-assassin-idle",
       startWithCutScene: false,
     });

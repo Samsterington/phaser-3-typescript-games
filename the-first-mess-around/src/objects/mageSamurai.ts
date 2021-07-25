@@ -3,22 +3,42 @@ import { MainScene } from "../scenes/main-scene";
 import {
   Direction,
   CHARACTER_SCALE,
-  ORIGIN,
   LeftRightXYType,
 } from "../utils/sprite-utils";
+import { DroidAssassinState } from "./droidAssassin";
 
 export enum MageSamuraiState {
   IDLE_RIGHT = "mage-samurai-idle-right",
+  IDLE_LEFT = "mage-samurai-idle-left",
+  WALK_RIGHT = "mage-samurai-walk-right",
+  WALK_LEFT = "mage-samurai-walk-left",
   DYING_RIGHT = "mage-samurai-dying-right",
+  DYING_LEFT = "mage-samurai-dying-left",
   DEAD_RIGHT = "mage-samurai-dead-right",
   DEAD_LEFT = "mage-samurai-dead-left",
   HAS_BEEN_HIT_RIGHT = "mage-samurai-has-been-hit-right",
   HAS_BEEN_HIT_LEFT = "mage-samurai-has-been-hit-left",
 }
 
+interface Inputs {
+  DISTANCE_TO_DA: number;
+}
+
+const ORIGIN: LeftRightXYType = {
+  LEFT: [0.72, 0.5],
+  RIGHT: [0.28, 0.5],
+};
+
+const CONTROLS = {
+  SEEING_DISTANCE: 300,
+  ATTACK_DISTANCE: 100,
+  WALK_SPEED: 50,
+  WALK_ACCELERATION: 200,
+};
+
 const OFFSET: LeftRightXYType = {
-  RIGHT: [22, 10],
-  LEFT: [98, 10],
+  RIGHT: [23, 10],
+  LEFT: [80, 10],
 };
 
 const SIZE: [number, number] = [25, 22];
@@ -38,6 +58,7 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   initSprite() {
     this.currentScene.physics.world.enable(this);
+    this.body.setMaxSpeed(CONTROLS.WALK_SPEED);
     this.body.setSize(...SIZE);
     this.body.setOffset(...OFFSET.RIGHT);
 
@@ -54,14 +75,21 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   handleAnimations() {
     switch (this.currentState) {
       case MageSamuraiState.HAS_BEEN_HIT_RIGHT:
+      case MageSamuraiState.HAS_BEEN_HIT_LEFT:
         this.anims.stop();
         break;
+      case MageSamuraiState.DEAD_RIGHT:
+      case MageSamuraiState.DEAD_LEFT:
       case MageSamuraiState.IDLE_RIGHT:
+      case MageSamuraiState.IDLE_LEFT:
+      case MageSamuraiState.WALK_RIGHT:
+      case MageSamuraiState.WALK_LEFT:
         this.anims.play(this.currentState, true);
         break;
+      case MageSamuraiState.DYING_LEFT:
       case MageSamuraiState.DYING_RIGHT:
         this.anims.play(this.currentState, true).on("animationcomplete", () => {
-          this.dead(Direction.RIGHT);
+          this.dead();
         });
         break;
     }
@@ -69,17 +97,87 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   runStateMachine() {
     // Something that collects inputs maybe
-    this.stateMachine();
+    const inputs = this.calculateInputs();
+    this.stateMachine(inputs);
   }
 
-  stateMachine() {
-    // switch (this.currentState) {
-    // }
+  calculateInputs(): Inputs {
+    const distanceToDA = this.currentScene.droidAssassin.x - this.x;
+    return {
+      DISTANCE_TO_DA: distanceToDA,
+    };
+  }
+
+  stateMachine({ DISTANCE_TO_DA }: Inputs) {
+    switch (this.currentState) {
+      case MageSamuraiState.IDLE_LEFT:
+      case MageSamuraiState.IDLE_RIGHT:
+        // if (Math.abs(DISTANCE_TO_DA) < CONTROLS.ATTACK_DISTANCE) {
+        //   if (DISTANCE_TO_DA < 0) {
+        //     this.attack();
+        //   }
+        //   if (DISTANCE_TO_DA > 0) {
+        //     this.attack();
+        //   }
+        // } else
+        if (
+          Math.abs(DISTANCE_TO_DA) < CONTROLS.SEEING_DISTANCE &&
+          Math.abs(DISTANCE_TO_DA) > CONTROLS.ATTACK_DISTANCE
+        ) {
+          if (DISTANCE_TO_DA < 0) {
+            this.walk(Direction.LEFT);
+          }
+          if (DISTANCE_TO_DA > 0) {
+            this.walk(Direction.RIGHT);
+          }
+        } else {
+          this.idle();
+        }
+        break;
+      case MageSamuraiState.WALK_RIGHT:
+      case MageSamuraiState.WALK_LEFT:
+        const absoluteDistanceT0DA = Math.abs(DISTANCE_TO_DA);
+        if (absoluteDistanceT0DA < CONTROLS.ATTACK_DISTANCE) {
+          this.idle();
+        } else {
+          this.walk();
+        }
+        break;
+    }
+  }
+
+  idle(paramDirection?: Direction) {
+    const direction = this.getDirection(paramDirection);
+    this.stopMotion(); // Might need to be replaced with friction down the line if wanting more realism
+    this.correctOriginAndOffset(direction);
+    switch (direction) {
+      case Direction.RIGHT:
+        this.currentState = MageSamuraiState.IDLE_RIGHT;
+        break;
+      case Direction.LEFT:
+        this.currentState = MageSamuraiState.IDLE_LEFT;
+        break;
+    }
+  }
+
+  walk(paramDirection?: Direction) {
+    const direction = this.getDirection(paramDirection);
+    this.correctOriginAndOffset(direction);
+    switch (direction) {
+      case Direction.RIGHT:
+        this.currentState = MageSamuraiState.WALK_RIGHT;
+        break;
+      case Direction.LEFT:
+        this.currentState = MageSamuraiState.WALK_LEFT;
+        break;
+    }
+    this.body.setAccelerationX(CONTROLS.WALK_ACCELERATION * direction);
   }
 
   getHit(paramDirection?: Direction) {
     if (!this.isDeadAlready()) {
       this.tint = 0xff0000;
+      this.stopMotion();
       const direction = this.getDirection(paramDirection);
       switch (direction) {
         case Direction.RIGHT:
@@ -93,7 +191,7 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   }
 
   dead(paramDirection?: Direction) {
-    if (this.currentState === MageSamuraiState.DYING_RIGHT) {
+    if (!this.isDeadAlready()) {
       const direction = this.getDirection(paramDirection);
       switch (direction) {
         case Direction.RIGHT:
@@ -108,19 +206,38 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
 
   die(paramDirection?: Direction) {
     if (!this.isDeadAlready()) {
+      this.stopMotion();
       this.clearTint();
       const direction = this.getDirection(paramDirection);
+      this.correctOriginAndOffset(direction);
       switch (direction) {
         case Direction.RIGHT:
           this.currentState = MageSamuraiState.DYING_RIGHT;
+          break;
         case Direction.LEFT:
-          this.currentState = MageSamuraiState.DYING_RIGHT; // TODO - Will need to change to left
+          this.currentState = MageSamuraiState.DYING_LEFT;
+          break;
       }
     }
   }
 
+  // -- UTILS --
+
+  correctOriginAndOffset(direction: Direction) {
+    switch (direction) {
+      case Direction.RIGHT:
+        this.setOrigin(...ORIGIN.RIGHT);
+        this.body.setOffset(...OFFSET.RIGHT);
+        break;
+      case Direction.LEFT:
+        this.setOrigin(...ORIGIN.LEFT);
+        this.body.setOffset(...OFFSET.LEFT);
+        break;
+    }
+  }
+
   getDirection = (paramDirection?: Direction): Direction => {
-    if (paramDirection) {
+    if (paramDirection !== undefined) {
       return paramDirection;
     }
     const words = this.currentState.split("-");
@@ -144,5 +261,10 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     } else {
       return false;
     }
+  }
+
+  stopMotion() {
+    this.body.setAccelerationX(0);
+    this.body.setVelocityX(0);
   }
 }
