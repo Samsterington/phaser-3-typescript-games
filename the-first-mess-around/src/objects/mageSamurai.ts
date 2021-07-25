@@ -228,8 +228,13 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
     this.body.setAccelerationX(CONTROLS.WALK_ACCELERATION * direction);
   }
 
-  getHit(paramDirection?: Direction) {
-    if (!this.isDeadAlready()) {
+  getHit(impactXPixels?: number, paramDirection?: Direction) {
+    if (
+      !this.isDeadAlready() &&
+      this.currentState !== MageSamuraiState.HAS_BEEN_HIT_RIGHT &&
+      this.currentState !== MageSamuraiState.HAS_BEEN_HIT_LEFT
+    ) {
+      this.x += impactXPixels ? impactXPixels : 0;
       this.tint = 0xff0000;
       this.stopMotion();
       const direction = this.getDirection(paramDirection);
@@ -320,5 +325,18 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   stopMotion() {
     this.body.setAccelerationX(0);
     this.body.setVelocityX(0);
+  }
+
+  isAttackingAnimationFrame(): boolean {
+    const frameNumber = parseInt(this.anims.currentFrame.frame.name, 10);
+    switch (this.currentState) {
+      case MageSamuraiState.JUMP_ATTACK_LEFT:
+      case MageSamuraiState.JUMP_ATTACK_RIGHT:
+        if (frameNumber >= 5 && frameNumber <= 8) {
+          return true;
+        }
+        break;
+    }
+    return false;
   }
 }

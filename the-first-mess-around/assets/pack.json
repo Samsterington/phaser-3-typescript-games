@@ -98,6 +98,24 @@
       },
       {
         "type": "spritesheet",
+        "key": "droid-assassin-death-right",
+        "url": "./assets/sprites/droid-assassin/death-right.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "droid-assassin-death-left",
+        "url": "./assets/sprites/droid-assassin/death-left.png",
+        "frameConfig": {
+          "frameWidth": 145,
+          "frameHeight": 48
+        }
+      },
+      {
+        "type": "spritesheet",
         "key": "mage-samurai-idle-right",
         "url": "./assets/sprites/mage-samurai/idle-right.png",
         "frameConfig": {

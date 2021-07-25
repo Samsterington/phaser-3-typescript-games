@@ -5,6 +5,7 @@ import {
   ORIGIN,
   CHARACTER_SCALE,
   LeftRightXYType,
+  Direction,
 } from "../utils/sprite-utils";
 import { MageSamuraiState } from "./mageSamurai";
 
@@ -22,6 +23,10 @@ export enum DroidAssassinState {
   ATTACK_LEFT = "droid-assassin-attack-left",
   BAD_ASS_CUT_SCENE_LEFT = "bad-ass-cut-scene-left",
   BAD_ASS_CUT_SCENE_RIGHT = "bad-ass-cut-scene-right",
+  DYING_RIGHT = "droid-assassin-death-right",
+  DYING_LEFT = "droid-assassin-death-left",
+  DEAD_RIGHT = "no-animation-for-dead-right",
+  DEAD_LEFT = "no-animation-for-dead-left",
 }
 
 enum ActiveInput {
@@ -61,6 +66,8 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   private currentScene: MainScene;
   public currentState: DroidAssassinState;
   private keys: Map<ActiveInput, Phaser.Input.Keyboard.Key>;
+
+  public isInvulnerable = false;
 
   // Start Transition
   private startingAnimationConstants: {
@@ -180,6 +187,12 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
         this.anims
           .play(this.currentState, true)
           .on("animationcomplete", () => this.attackLeftReset());
+        break;
+      case DroidAssassinState.DYING_LEFT:
+      case DroidAssassinState.DYING_RIGHT:
+        this.anims
+          .play(this.currentState, true)
+          .on("animationcomplete", () => this.dieReset());
         break;
     }
   }
@@ -331,6 +344,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   }
 
   dashAttackFromRunRight() {
+    this.isInvulnerable = true;
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_RUN_RIGHT;
     this.maintainMaximumVelocityRight();
     const numberOfAnimationFrames = this.currentScene.anims.get(
@@ -352,6 +366,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   }
 
   dashAttackFromRunLeft() {
+    this.isInvulnerable = true;
     this.currentState = DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT;
     this.maintainMaximumVelocityLeft();
     const numberOfAnimationFrames = this.currentScene.anims.get(
@@ -480,6 +495,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromRunLeftReset() {
     // Fudge because the on animationcomplete callback fires multiple times
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT) {
+      this.isInvulnerable = false;
       this.x -= DASH_DISTANCE;
       this.runLeft();
     }
@@ -488,8 +504,39 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   dashAttackFromRunRightReset() {
     // Fudge because the on animationcomplete callback fires multiple times
     if (this.currentState === DroidAssassinState.DASH_ATTACK_FROM_RUN_RIGHT) {
+      this.isInvulnerable = false;
       this.x += DASH_DISTANCE;
       this.runRight();
+    }
+  }
+
+  die(paramDirection?: Direction) {
+    // TODO - fix camera pan issues if dying occurs during a camera pan
+    if (!this.isDeadAlready()) {
+      const direction = this.getDirection(paramDirection);
+      this.stopMotion();
+      switch (direction) {
+        case Direction.RIGHT:
+          this.setOrigin(...ORIGIN.RIGHT);
+          this.currentState = DroidAssassinState.DYING_RIGHT;
+          break;
+        case Direction.LEFT:
+          this.setOrigin(...ORIGIN.LEFT);
+          this.currentState = DroidAssassinState.DYING_LEFT;
+          break;
+      }
+    }
+  }
+
+  dieReset(paramDirection?: Direction) {
+    const direction = this.getDirection(paramDirection);
+    switch (direction) {
+      case Direction.RIGHT:
+        this.currentState = DroidAssassinState.DEAD_RIGHT;
+        break;
+      case Direction.LEFT:
+        this.currentState = DroidAssassinState.DEAD_LEFT;
+        break;
     }
   }
 
@@ -543,6 +590,33 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
         break;
     }
     return false;
+  }
+
+  getDirection = (paramDirection?: Direction): Direction => {
+    if (paramDirection !== undefined) {
+      return paramDirection;
+    }
+    const words = this.currentState.split("-");
+    const stringDirection = words[words.length - 1];
+    switch (stringDirection) {
+      case "left":
+        return Direction.LEFT;
+      case "right":
+        return Direction.RIGHT;
+      default:
+        return Direction.RIGHT;
+    }
+  };
+
+  isDeadAlready(): boolean {
+    if (
+      this.currentState === DroidAssassinState.DEAD_RIGHT ||
+      this.currentState === DroidAssassinState.DEAD_LEFT
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

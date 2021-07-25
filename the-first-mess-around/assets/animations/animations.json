@@ -111,6 +111,28 @@
       "frameRate": 10
     },
     {
+      "key": "droid-assassin-death-right",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-death-right",
+        "start": 0,
+        "end": 6
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
+      "key": "droid-assassin-death-left",
+      "frames": {
+        "typeOfGeneration": "generateFrameNumbers",
+        "key": "droid-assassin-death-left",
+        "start": 0,
+        "end": 6
+      },
+      "repeat": 0,
+      "frameRate": 10
+    },
+    {
       "key": "mage-samurai-idle-right",
       "frames": {
         "typeOfGeneration": "generateFrameNumbers",

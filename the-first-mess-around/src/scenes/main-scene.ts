@@ -171,14 +171,23 @@ export class MainScene extends Phaser.Scene {
     MS: MageSamurai
   ) => {
     const { currentState: DACurrentState } = DA;
-    // const { currentState: MSCurrentState } = MS;
+    const { currentState: MSCurrentState } = MS;
     switch (DACurrentState) {
       case DroidAssassinState.ATTACK_LEFT:
       case DroidAssassinState.ATTACK_RIGHT:
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
         if (DA.isAttackingAnimationFrame() && !MS.isInvulnerable) {
-          MS.getHit();
+          const impact = DA.x > MS.x ? -6 : 6; // MIGHT WANNA BECOME A CONSTANT AT SOME POINT
+          MS.getHit(impact);
+        }
+        break;
+    }
+    switch (MSCurrentState) {
+      case MageSamuraiState.JUMP_ATTACK_RIGHT:
+      case MageSamuraiState.JUMP_ATTACK_LEFT:
+        if (MS.isAttackingAnimationFrame() && !DA.isInvulnerable) {
+          DA.die();
         }
         break;
     }
