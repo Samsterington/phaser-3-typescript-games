@@ -6,8 +6,10 @@ import {
   CHARACTER_SCALE,
   LeftRightXYType,
   Direction,
+  SpriteSnapshot,
 } from "../utils/sprite-utils";
 import { MageSamuraiState } from "./mageSamurai";
+import { LENGTH_OF_STORED_HISTORY } from "../config/gameConfig";
 
 // The associated strings match the animation
 export enum DroidAssassinState {
@@ -27,6 +29,7 @@ export enum DroidAssassinState {
   DYING_LEFT = "droid-assassin-death-left",
   DEAD_RIGHT = "no-animation-for-dead-right",
   DEAD_LEFT = "no-animation-for-dead-left",
+  REWIND = "no-animation-for-rewind",
 }
 
 enum ActiveInput {
@@ -68,6 +71,8 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   private keys: Map<ActiveInput, Phaser.Input.Keyboard.Key>;
 
   public isInvulnerable = false;
+
+  private history: SpriteSnapshot[] = [];
 
   // Start Transition
   private startingAnimationConstants: {
@@ -116,8 +121,6 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
     this.currentScene.physics.world.enable(this);
     this.body.setOffset(...OFFSET.RIGHT);
     this.body.setSize(...SIZE); // Doesn't seem to fo anything
-    this.body.debugShowBody = true;
-    // this.body.debugBodyColor = 0xff00ff;
 
     this.keys = new Map([
       [ActiveInput.LEFT, this.addKey("LEFT")],
@@ -136,6 +139,30 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   update() {
     this.runStateMachine();
     this.handleAnimations();
+    this.handleHistory();
+  }
+
+  handleHistory() {
+    if (
+      this.currentState !== DroidAssassinState.REWIND &&
+      !this.isDeadAlready()
+    ) {
+      this.history.unshift({
+        spritePosition: {
+          x: this.x,
+          y: this.y,
+        },
+        cameraPosition: {
+          x: this.currentScene.cameras.main.centerX,
+          y: this.currentScene.cameras.main.centerY,
+        },
+        frameName: this.anims.currentFrame.frame.name,
+        state: this.currentState,
+      });
+      if (this.history.length > LENGTH_OF_STORED_HISTORY) {
+        this.history.pop();
+      }
+    }
   }
 
   handleAnimations() {
@@ -157,6 +184,12 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
         break;
       case DroidAssassinState.RUN_LEFT:
         this.anims.play(this.currentState, true);
+        break;
+      case DroidAssassinState.DYING_LEFT:
+      case DroidAssassinState.DYING_RIGHT:
+        this.anims
+          .play(this.currentState, true)
+          .on("animationcomplete", () => this.dieReset());
         break;
       case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
         this.anims
@@ -188,11 +221,11 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
           .play(this.currentState, true)
           .on("animationcomplete", () => this.attackLeftReset());
         break;
-      case DroidAssassinState.DYING_LEFT:
-      case DroidAssassinState.DYING_RIGHT:
-        this.anims
-          .play(this.currentState, true)
-          .on("animationcomplete", () => this.dieReset());
+      case DroidAssassinState.REWIND:
+        if (this.history.length > 0) {
+          const spriteSnapshot = this.history[0];
+          this.setTexture(spriteSnapshot.state, spriteSnapshot.frameName);
+        }
         break;
     }
   }
@@ -308,10 +341,47 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
       case DroidAssassinState.DASH_ATTACK_FROM_RUN_LEFT:
         this.maintainMaximumVelocityLeft();
         break;
+      case DroidAssassinState.REWIND:
+        this.rewind();
+        break;
     }
   }
 
   // TRANSITIONS //
+
+  rewind() {
+    const spriteSnapshot = this.history.shift();
+    if (this.history.length > 0) {
+      this.currentScene.cameras.main.centerOn(
+        spriteSnapshot.cameraPosition.x,
+        spriteSnapshot.cameraPosition.y
+      );
+      this.x = spriteSnapshot.spritePosition.x;
+      this.y = spriteSnapshot.spritePosition.y;
+    } else {
+      let direction: number;
+      const words = spriteSnapshot.state.split("-");
+      const stringDirection = words[words.length - 1];
+      switch (stringDirection) {
+        case "left":
+          direction = Direction.LEFT;
+          break;
+        case "right":
+          direction = Direction.RIGHT;
+          break;
+        default:
+          direction = Direction.RIGHT;
+      }
+      switch (direction) {
+        case Direction.LEFT:
+          this.idleLeft();
+          break;
+        case Direction.RIGHT:
+          this.idleRight();
+          break;
+      }
+    }
+  }
 
   badAssCutSceneRight() {
     //Hacky check if this is the first run
@@ -529,14 +599,23 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
   }
 
   dieReset(paramDirection?: Direction) {
-    const direction = this.getDirection(paramDirection);
-    switch (direction) {
-      case Direction.RIGHT:
-        this.currentState = DroidAssassinState.DEAD_RIGHT;
-        break;
-      case Direction.LEFT:
-        this.currentState = DroidAssassinState.DEAD_LEFT;
-        break;
+    if (!this.isDeadAlready()) {
+      // REMOVE THIS LATER -- remove MS to not confuse things
+      this.currentScene.mageSamurai.die();
+
+      setTimeout(() => {
+        this.currentState = DroidAssassinState.REWIND;
+      }, 200);
+
+      const direction = this.getDirection(paramDirection);
+      switch (direction) {
+        case Direction.RIGHT:
+          this.currentState = DroidAssassinState.DEAD_RIGHT;
+          break;
+        case Direction.LEFT:
+          this.currentState = DroidAssassinState.DEAD_LEFT;
+          break;
+      }
     }
   }
 

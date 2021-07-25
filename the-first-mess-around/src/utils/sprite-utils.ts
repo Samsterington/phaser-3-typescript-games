@@ -1,3 +1,6 @@
+import { DroidAssassinState } from "../objects/droidAssassin";
+import { MageSamuraiState } from "../objects/mageSamurai";
+
 export enum Direction {
   RIGHT = 1,
   LEFT = -1,
@@ -14,3 +17,18 @@ export const ORIGIN: LeftRightXYType = {
 };
 
 export const CHARACTER_SCALE = 2.5;
+
+type SpriteState = DroidAssassinState | MageSamuraiState;
+
+export interface SpriteSnapshot {
+  spritePosition: {
+    x: number;
+    y: number;
+  };
+  frameName: string;
+  state: SpriteState;
+  cameraPosition: {
+    x: number;
+    y: number;
+  };
+}

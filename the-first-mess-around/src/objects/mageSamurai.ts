@@ -4,6 +4,7 @@ import {
   Direction,
   CHARACTER_SCALE,
   LeftRightXYType,
+  SpriteSnapshot,
 } from "../utils/sprite-utils";
 import { DroidAssassinState } from "./droidAssassin";
 
@@ -53,6 +54,8 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   private currentScene: MainScene;
   public currentState: MageSamuraiState;
 
+  private history: SpriteSnapshot[] = [];
+
   private isAttackReady = {
     jumpAttack: true,
   };
@@ -80,6 +83,18 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
   update() {
     this.runStateMachine();
     this.handleAnimations();
+    this.captureHistory();
+  }
+
+  captureHistory() {
+    // this.history.unshift({
+    //   position: {
+    //     x: this.x,
+    //     y: this.y,
+    //   },
+    //   frameName: this.anims.currentFrame.frame.name,
+    //   state: this.currentState,
+    // });
   }
 
   handleAnimations() {
@@ -88,8 +103,6 @@ export class MageSamurai extends Phaser.GameObjects.Sprite {
       case MageSamuraiState.HAS_BEEN_HIT_LEFT:
         this.anims.stop();
         break;
-      case MageSamuraiState.DEAD_RIGHT:
-      case MageSamuraiState.DEAD_LEFT:
       case MageSamuraiState.IDLE_RIGHT:
       case MageSamuraiState.IDLE_LEFT:
       case MageSamuraiState.WALK_RIGHT:
