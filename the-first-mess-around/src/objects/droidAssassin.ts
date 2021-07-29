@@ -605,7 +605,7 @@ export class DroidAssassin extends Phaser.GameObjects.Sprite {
 
       setTimeout(() => {
         this.currentState = DroidAssassinState.REWIND;
-      }, 200);
+      }, 1000);
 
       const direction = this.getDirection(paramDirection);
       switch (direction) {
