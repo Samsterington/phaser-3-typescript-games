@@ -50,7 +50,7 @@
         "typeOfGeneration": "generateFrameNumbers",
         "key": "droid-assassin-dash-attack-from-run-right",
         "start": 8,
-        "end": 11
+        "end": 14
       },
       "repeat": 0,
       "frameRate": 10
@@ -61,7 +61,7 @@
         "typeOfGeneration": "generateFrameNumbers",
         "key": "droid-assassin-dash-attack-from-run-left",
         "start": 8,
-        "end": 11
+        "end": 16
       },
       "repeat": 0,
       "frameRate": 10
@@ -106,116 +106,6 @@
         "key": "droid-assassin-attack-left",
         "start": 4,
         "end": 18
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "droid-assassin-death-right",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "droid-assassin-death-right",
-        "start": 0,
-        "end": 6
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "droid-assassin-death-left",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "droid-assassin-death-left",
-        "start": 0,
-        "end": 6
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-idle-right",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-idle-right",
-        "start": 0,
-        "end": 3
-      },
-      "repeat": -1,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-idle-left",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-idle-left",
-        "start": 0,
-        "end": 3
-      },
-      "repeat": -1,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-walk-right",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-walk-right",
-        "start": 0,
-        "end": 4
-      },
-      "repeat": -1,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-walk-left",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-walk-left",
-        "start": 0,
-        "end": 4
-      },
-      "repeat": -1,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-jump-attack-right",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-jump-attack-right",
-        "start": 0,
-        "end": 14
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-jump-attack-left",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-jump-attack-left",
-        "start": 0,
-        "end": 14
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-dying-right",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-dying-right",
-        "start": 0,
-        "end": 8
-      },
-      "repeat": 0,
-      "frameRate": 10
-    },
-    {
-      "key": "mage-samurai-dying-left",
-      "frames": {
-        "typeOfGeneration": "generateFrameNumbers",
-        "key": "mage-samurai-dying-left",
-        "start": 0,
-        "end": 8
       },
       "repeat": 0,
       "frameRate": 10

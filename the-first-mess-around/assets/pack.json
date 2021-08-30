@@ -97,96 +97,6 @@
         }
       },
       {
-        "type": "spritesheet",
-        "key": "droid-assassin-death-right",
-        "url": "./assets/sprites/droid-assassin/death-right.png",
-        "frameConfig": {
-          "frameWidth": 145,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "droid-assassin-death-left",
-        "url": "./assets/sprites/droid-assassin/death-left.png",
-        "frameConfig": {
-          "frameWidth": 145,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-idle-right",
-        "url": "./assets/sprites/mage-samurai/idle-right.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-idle-left",
-        "url": "./assets/sprites/mage-samurai/idle-left.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-dying-right",
-        "url": "./assets/sprites/mage-samurai/dying-right.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-dying-left",
-        "url": "./assets/sprites/mage-samurai/dying-left.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-walk-right",
-        "url": "./assets/sprites/mage-samurai/walk-right.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-walk-left",
-        "url": "./assets/sprites/mage-samurai/walk-left.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-jump-attack-right",
-        "url": "./assets/sprites/mage-samurai/jump-attack-right.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
-        "type": "spritesheet",
-        "key": "mage-samurai-jump-attack-left",
-        "url": "./assets/sprites/mage-samurai/jump-attack-left.png",
-        "frameConfig": {
-          "frameWidth": 128,
-          "frameHeight": 48
-        }
-      },
-      {
         "type": "image",
         "key": "background-forest-0",
         "url": "./assets/backgrounds/forest/Layer_0000_9.png"
@@ -245,11 +155,6 @@
         "type": "image",
         "key": "transparent",
         "url": "./assets/sprites/utils/transparent.png"
-      },
-      {
-        "type": "image",
-        "key": "black",
-        "url": "./assets/sprites/utils/black.png"
       }
     ]
   }

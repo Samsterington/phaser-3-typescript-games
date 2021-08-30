@@ -1,14 +1,12 @@
-import { DroidAssassin, DroidAssassinState } from "../objects/droidAssassin";
-import { MageSamurai, MageSamuraiState } from "../objects/mageSamurai";
+import { DroidAssassin } from "../objects/droidAssassin";
+import { BootScene } from "./boot-scene";
 
 const BACKGROUND_VERTICAL_OFFSET = -376;
-const BOUNDS_MULTIPLIER = 10;
+const BOUNDS_MULTIPLIER = 5;
 const MAX_IMAGE_SCROLLFACTOR = 1.3;
 
 export class MainScene extends Phaser.Scene {
-  public droidAssassin: DroidAssassin;
-  public mageSamurai: MageSamurai;
-
+  private droidAssassin: DroidAssassin;
   private floors: Phaser.Physics.Arcade.StaticGroup;
   private images: Phaser.GameObjects.Image[];
 
@@ -24,17 +22,10 @@ export class MainScene extends Phaser.Scene {
 
     this.createBackground();
 
-    this.mageSamurai = new MageSamurai({
-      scene: this,
-      x: 850,
-      y: 333,
-      texture: "mage-samurai-idle-right",
-    });
-
     this.droidAssassin = new DroidAssassin({
       scene: this,
       x: this.sys.game.canvas.width / 2,
-      y: 333,
+      y: 337,
       texture: "droid-assassin-idle",
       startWithCutScene: false,
     });
@@ -42,11 +33,11 @@ export class MainScene extends Phaser.Scene {
     this.createForeground();
 
     this.createCollisions();
-    this.createOverlaps();
   }
 
   public changeImageScrollFactor() {
     this.images.forEach((image) => {
+      console.log(image.scrollFactorX);
       image.setScrollFactor(
         Math.round((MAX_IMAGE_SCROLLFACTOR - image.scrollFactorX) * 10) / 10
       );
@@ -64,6 +55,10 @@ export class MainScene extends Phaser.Scene {
     );
   }
 
+  createCollisions() {
+    this.physics.add.collider(this.floors, this.droidAssassin);
+  }
+
   createFloor() {
     this.floors = this.physics.add.staticGroup();
     const floor = this.floors.create(
@@ -71,7 +66,7 @@ export class MainScene extends Phaser.Scene {
       this.scale.height,
       "transparent"
     );
-    floor.setSize(100000, 95);
+    floor.setSize(10000, 95);
   }
 
   createRepeatingBackground(
@@ -148,48 +143,6 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(): void {
-    this.mageSamurai.update();
     this.droidAssassin.update();
   }
-
-  createCollisions() {
-    this.physics.add.collider(this.floors, this.mageSamurai);
-    this.physics.add.collider(this.floors, this.droidAssassin);
-  }
-
-  createOverlaps() {
-    this.physics.add.overlap(
-      this.droidAssassin,
-      this.mageSamurai,
-      this.ifDroidAssassinMageSamuraiOverlap
-    );
-  }
-
-  // Overlap Callbacks
-  ifDroidAssassinMageSamuraiOverlap: ArcadePhysicsCallback = (
-    DA: DroidAssassin,
-    MS: MageSamurai
-  ) => {
-    const { currentState: DACurrentState } = DA;
-    const { currentState: MSCurrentState } = MS;
-    switch (DACurrentState) {
-      case DroidAssassinState.ATTACK_LEFT:
-      case DroidAssassinState.ATTACK_RIGHT:
-      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_LEFT:
-      case DroidAssassinState.DASH_ATTACK_FROM_IDLE_RIGHT:
-        if (DA.isAttackingAnimationFrame() && !MS.isInvulnerable) {
-          const impact = DA.x > MS.x ? -6 : 6; // MIGHT WANNA BECOME A CONSTANT AT SOME POINT
-          MS.getHit(impact);
-        }
-        break;
-    }
-    switch (MSCurrentState) {
-      case MageSamuraiState.JUMP_ATTACK_RIGHT:
-      case MageSamuraiState.JUMP_ATTACK_LEFT:
-        if (MS.isAttackingAnimationFrame() && !DA.isInvulnerable) {
-          DA.die();
-        }
-        break;
-    }
-  };
 }
